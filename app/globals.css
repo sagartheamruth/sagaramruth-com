@@ -1,26 +1,176 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #1d1d1f;
+  --accent: #e6a700;
+  color-scheme: light;
+}
+
+.dark {
+  --background: #1e1e1e;
+  --foreground: #f2f2f2;
+  --accent: #ffd60a;
+  color-scheme: dark;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  height: 100%;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+}
+
+/* theme toggle — circular reveal via the View Transitions API */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* going dark: new (dark) view expands over the old */
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 9999;
+}
+
+/* going light: old (dark) view collapses, revealing the new underneath */
+.vt-reverse::view-transition-old(root) {
+  z-index: 9999;
+}
+
+.vt-reverse::view-transition-new(root) {
+  z-index: 1;
+}
+
+/* fallback cross-fade for browsers without view transitions */
+html.theme-fade,
+html.theme-fade *,
+html.theme-fade *::before,
+html.theme-fade *::after {
+  transition:
+    background-color 0.45s ease,
+    color 0.45s ease,
+    border-color 0.45s ease,
+    fill 0.45s ease,
+    stroke 0.45s ease !important;
+}
+
+/* theme toggle — sun ⇄ moon icon morph */
+.theme-icon .sun-core {
+  transform-origin: center;
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.dark .theme-icon .sun-core {
+  transform: scale(1.55);
+}
+
+.theme-icon .sun-rays {
+  transform-origin: center;
+  transition:
+    transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.3s ease;
+}
+
+.dark .theme-icon .sun-rays {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.4);
+}
+
+.theme-icon .moon-cutout {
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform: translate(10px, -10px);
+}
+
+.dark .theme-icon .moon-cutout {
+  transform: translate(2.5px, -2.5px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-icon .sun-core,
+  .theme-icon .sun-rays,
+  .theme-icon .moon-cutout {
+    transition: none;
+  }
+}
+
+/* markdown content inside a note */
+.note-content {
+  font-size: 0.95rem;
+  line-height: 1.75;
+}
+
+.note-content h2 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 1.75em 0 0.5em;
+}
+
+.note-content h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 1.5em 0 0.5em;
+}
+
+.note-content p {
+  margin: 0.75em 0;
+}
+
+.note-content ul,
+.note-content ol {
+  margin: 0.75em 0;
+  padding-left: 1.4em;
+}
+
+.note-content ul {
+  list-style: disc;
+}
+
+.note-content ol {
+  list-style: decimal;
+}
+
+.note-content li {
+  margin: 0.3em 0;
+}
+
+.note-content a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.note-content code {
+  background: rgba(127, 127, 127, 0.15);
+  border-radius: 4px;
+  padding: 0.15em 0.35em;
+  font-size: 0.85em;
+}
+
+.note-content blockquote {
+  border-left: 3px solid var(--accent);
+  padding-left: 1em;
+  opacity: 0.8;
+}
+
+.note-content hr {
+  border: none;
+  border-top: 1px solid rgba(127, 127, 127, 0.3);
+  margin: 2em 0;
 }
