@@ -165,8 +165,7 @@ what's usually playing while the work gets done.
 the fastest way to reach me:
 
 - twitter / x: [x.com/sagartheamruth](https://x.com/sagartheamruth)
-- instagram: [instagram.com/sagartheamruth](https://instagram.com/sagartheamruth)
-- overpowered.ai: [instagram.com/overpowered.ai](https://instagram.com/overpowered.ai)
+- instagram: [instagram.com/thesagaramruth](https://instagram.com/thesagaramruth)
 - email: [sagaramruth1212@gmail.com](mailto:sagaramruth1212@gmail.com)
 `,
   },
